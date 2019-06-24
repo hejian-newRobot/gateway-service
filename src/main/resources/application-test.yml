@@ -12,17 +12,22 @@ eureka:
       defaultZone:
         http://${eureka.instance.hostname}:${server.register.port1}/eureka/
 
+path:
+  oauth:
+    prefix: oauth
+
 spring:
   cloud:
     gateway:
       routes:
       - id: firstmicroservice
-        uri: lb://firstmicroservice/hello
+        uri: lb://service-hi/product/
         predicates:
-        - Path=/hello
-        filters:
-        - AddResponseHeader=X-Response-Default-Foo, Default-Bar
+        - Path=/product/**
+#        filters:
+#        - AddResponseHeader=X-Response-Default-Foo, Default-Bar
       - id: authservice
-        uri: lb://authservice/oauth
+        uri: lb://service-auth/oauth
         predicates:
-        - Path=/oauth/**
+        - Path=/${path.oauth.prefix}/**
+
