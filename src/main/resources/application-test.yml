@@ -21,7 +21,7 @@ spring:
     gateway:
       routes:
       - id: firstmicroservice
-        uri: lb://service-hi/product/
+        uri: lb://service-demo/product/
         predicates:
         - Path=/product/**
 #        filters:
