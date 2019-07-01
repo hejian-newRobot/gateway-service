@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "rate-limit.bucket.capacity",
+      "type": "java.lang.Integer",
+      "description": "Description for rate-limit.bucket.capacity."
+    },
+    {
+      "name": "rate-limit.bucket.refillTokens",
+      "type": "java.lang.Integer",
+      "description": "Description for rate-limit.bucket.refill-tokens."
+    },
+    {o
+      "name": "rate-limit.bucket.refillDuration",
+      "type": "java.lang.Integer",
+      "description": "Description for rate-limit.bucket.refill-duration."
+    }
+  ]
+}

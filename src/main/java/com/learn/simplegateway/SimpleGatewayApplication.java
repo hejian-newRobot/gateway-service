@@ -2,7 +2,10 @@ package com.learn.simplegateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+
+import authentication.filter.RateLimitByIpGatewayFilter;
 
 /**
  * API网关服务
@@ -11,6 +14,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  */
 @SpringBootApplication(scanBasePackages = {"conf", "authentication.*"})
 @EnableEurekaClient
+@EnableConfigurationProperties(value = {RateLimitByIpGatewayFilter.class})
 public class SimpleGatewayApplication {
 
     public static void main(String[] args) {

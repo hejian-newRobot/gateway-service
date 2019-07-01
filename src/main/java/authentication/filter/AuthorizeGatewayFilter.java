@@ -50,7 +50,7 @@ public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -78,6 +78,8 @@ public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
             DataBuffer dataBuffer = response.bufferFactory().wrap(value);
             return response.writeWith(Flux.just(dataBuffer));
         }
+        logger.info("Authorization token is not empty");
+
         logger.info("Authorization token is ok");
         return chain.filter(exchange);
     }
