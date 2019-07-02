@@ -29,15 +29,18 @@ spring:
           lower-case-service-id: true
       routes:
         - id: firstmicroservice
-          uri: lb://service-demo/product/
+          uri: lb://service-demo/
           predicates:
-            - Path=/product/**
-        #        filters:
-        #        - AddResponseHeader=X-Response-Default-Foo, Default-Bar
+            - Path=/demo/**
+          filters:
+            - SwaggerHeaderFilter
+            - StripPrefix=1
         - id: authservice
-          uri: lb://service-auth/oauth
+          uri: lb://service-auth/${path.oauth.prefix}/
           predicates:
             - Path=/${path.oauth.prefix}/**
+#          filters:
+#            - StripPrefix=1
 
 # rate limiter configuration
 
@@ -46,3 +49,8 @@ rate-limit:
     capacity: 30
     refillTokens: 2
     refillDuration: 1
+
+filter:
+  gateway:
+    authorize:
+      ignoredSubSequenceOfUrl: oauth,swagger-ui.html

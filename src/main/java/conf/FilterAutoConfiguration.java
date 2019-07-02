@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import authentication.filter.RateLimitByIpGatewayFilter;
+import authentication.filter.SwaggerHeaderFilter;
 
 /**
  * 项目名称：SimpleSpringCloudGateway
@@ -18,10 +19,15 @@ import authentication.filter.RateLimitByIpGatewayFilter;
  * @author hejian
  */
 @Configuration
-public class EnableConfigurationPropertiesConfiguration {
+public class FilterAutoConfiguration {
 
     @Bean
     public RateLimitByIpGatewayFilter rateLimitByIpGatewayFilter() {
         return new RateLimitByIpGatewayFilter();
+    }
+
+    @Bean
+    public SwaggerHeaderFilter swaggerHeaderFilter() {
+        return new SwaggerHeaderFilter();
     }
 }

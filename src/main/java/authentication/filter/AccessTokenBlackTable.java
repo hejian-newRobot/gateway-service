@@ -31,14 +31,14 @@ public class AccessTokenBlackTable implements Job {
 
     private static Logger logger = LoggerFactory.getLogger(AccessTokenBlackTable.class);
 
-    private static final List<String> blackTable = new ArrayList<>();
+    private static final List<String> BLACK_TABLE = new ArrayList<>();
 
     public static boolean has(String token) {
         if (StringUtils.isEmpty(token)) {
             logger.debug("invalidate method : token is empty");
             return false;
         }
-        return blackTable.stream()
+        return BLACK_TABLE.stream()
                 .anyMatch(blackTable -> blackTable.equals(token));
     }
 
@@ -52,19 +52,19 @@ public class AccessTokenBlackTable implements Job {
             return false;
         }
 
-        return blackTable.add(token);
+        return BLACK_TABLE.add(token);
     }
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
         byte[] signingKey = "hejian".getBytes(StandardCharsets.UTF_8);
-        List<String> removeList = blackTable.stream().filter(token -> {
+        List<String> removeList = BLACK_TABLE.stream().filter(token -> {
             Jws<Claims> claimsJws = Jwts.parser()
                     .setSigningKey(signingKey)
                     .parseClaimsJws(token);
             //解析失败返回null 没有解析成功说明jwt失效 失效则是需要被移除的token
             return claimsJws == null;
         }).collect(Collectors.toList());
-        blackTable.removeAll(removeList);
+        BLACK_TABLE.removeAll(removeList);
     }
 }

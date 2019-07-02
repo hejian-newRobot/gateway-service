@@ -11,6 +11,7 @@ import authentication.filter.RateLimitByIpGatewayFilter;
  * API网关服务
  *
  * @ EnableOAuth2Sso 启用OAuth2单点登录
+ * @author Administrator
  */
 @SpringBootApplication(scanBasePackages = {"conf", "authentication.*"})
 @EnableEurekaClient

@@ -3,7 +3,7 @@ package authentication.filter;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -14,6 +14,9 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,6 +34,7 @@ import reactor.core.publisher.Mono;
  * @author hejian
  */
 @Component
+@ConfigurationProperties("filter.gateway.authorize")
 public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
 
     private static Logger logger = LoggerFactory.getLogger(AuthorizeGatewayFilter.class);
@@ -45,8 +49,10 @@ public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
      */
     private static final String ACCESS_TOKEN = "access_token";
 
-    @Value("${path.oauth.prefix}")
-    private String authPathPrefix;
+    /**
+     * a string list that need to skip currently filter
+     */
+    private String[] ignoredSubSequenceOfUrl;
 
     @Override
     public int getOrder() {
@@ -59,7 +65,11 @@ public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
         logger.info("send method {} request to {}", request.getMethod(), request.getURI().toString());
         //将会跳转到OAuth2认证服务 无需提前验证 是否存在AUTHORIZATION
         //其余所有访问别的服务的请求将需要携带AUTHORIZATION请求头或者是请求参数
-        if (request.getURI().toString().contains(authPathPrefix)) {
+        Object referer = request.getHeaders().get("Referer");
+        if (checkIgnoredSequences(ignoredSubSequenceOfUrl,
+                Optional.ofNullable(referer).isPresent()
+                        ? referer.toString()
+                        : StringUtils.EMPTY)) {
             return chain.filter(exchange);
         }
         HttpHeaders headers = request.getHeaders();
@@ -82,5 +92,29 @@ public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
 
         logger.info("Authorization token is ok");
         return chain.filter(exchange);
+    }
+
+    private boolean checkIgnoredSequences(String[] ignoredSequences, String url) {
+        if (StringUtils.isEmpty(url)) {
+            return false;
+        }
+        String[] strs = url.split("\\?");
+        String urlPath = strs.length > 0 ? strs[0] : null;
+        if (StringUtils.isEmpty(urlPath)) {
+            return false;
+        }
+        boolean present = Optional.ofNullable(ignoredSequences).isPresent();
+        if (!present || ignoredSequences.length == 0) {
+            return false;
+        }
+        return Arrays.stream(ignoredSequences).anyMatch(urlPath::contains);
+    }
+
+    public final String[] getIgnoredSubSequenceOfUrl() {
+        return ignoredSubSequenceOfUrl;
+    }
+
+    public final void setIgnoredSubSequenceOfUrl(String[] ignoredSubSequenceOfUrl) {
+        this.ignoredSubSequenceOfUrl = ignoredSubSequenceOfUrl;
     }
 }
