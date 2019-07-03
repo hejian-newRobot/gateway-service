@@ -4,15 +4,17 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
 import java.util.Arrays;
@@ -33,8 +35,10 @@ import reactor.core.publisher.Mono;
  *
  * @author hejian
  */
-@Component
-@ConfigurationProperties("filter.gateway.authorize")
+@Primary
+@ConfigurationProperties(prefix = "filter.gateway.authorize")
+@EnableConfigurationProperties(value = {AuthorizeGatewayFilter.class})
+@Configuration
 public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
 
     private static Logger logger = LoggerFactory.getLogger(AuthorizeGatewayFilter.class);

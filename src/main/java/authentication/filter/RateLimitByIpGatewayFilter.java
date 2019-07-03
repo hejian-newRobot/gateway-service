@@ -3,6 +3,7 @@ package authentication.filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -33,6 +34,7 @@ import reactor.core.publisher.Mono;
  * @author hejian
  */
 @ConfigurationProperties(prefix = "rate-limit.bucket")
+@EnableConfigurationProperties(RateLimitByIpGatewayFilter.class)
 public class RateLimitByIpGatewayFilter implements GlobalFilter, Ordered {
 
     /**

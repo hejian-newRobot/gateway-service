@@ -15,7 +15,6 @@ import authentication.filter.RateLimitByIpGatewayFilter;
  */
 @SpringBootApplication(scanBasePackages = {"conf", "authentication.*"})
 @EnableEurekaClient
-@EnableConfigurationProperties(value = {RateLimitByIpGatewayFilter.class})
 public class SimpleGatewayApplication {
 
     public static void main(String[] args) {
