@@ -39,6 +39,13 @@ spring:
           uri: lb://service-auth/${path.oauth.prefix}/
           predicates:
             - Path=/${path.oauth.prefix}/**
+        - id: staffservice
+          uri: lb://service-staff/
+          predicates:
+            - Path=/staff/**
+          filters:
+            - SwaggerHeaderFilter
+            - StripPrefix=1
 #          filters:
 #            - StripPrefix=1
 
