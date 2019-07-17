@@ -46,9 +46,15 @@ spring:
           filters:
             - SwaggerHeaderFilter
             - StripPrefix=1
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://192.168.3.182:8888"
+            allowedMethods:
+              - GET
+              - POST
 #          filters:
 #            - StripPrefix=1
-
 # rate limiter configuration
 
 rate-limit:
