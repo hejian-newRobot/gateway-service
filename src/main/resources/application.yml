@@ -1,17 +1,7 @@
 ##当前服务的配置 register.port[\d] 设置 发现微服务的discovery server 端口
 server:
   port: 8888
-  register:
-    port1: 8761
-
-eureka:
-  instance:
-    hostname: localhost
-  client:
-    service-url:
-      defaultZone:
-        http://${eureka.instance.hostname}:${server.register.port1}/eureka/
-
+##验证服务 的前缀路径
 path:
   oauth:
     prefix: oauth
@@ -23,7 +13,7 @@ spring:
   jmx:
     default-domain: spring-cloud-gateway
   profiles:
-    active: test
+    active: dev
   cloud:
     gateway:
       discovery:
@@ -49,15 +39,16 @@ spring:
           filters:
             - SwaggerHeaderFilter
             - StripPrefix=1
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "http://192.168.3.182:8888"
-            allowedMethods:
-              - GET
-              - POST
+#      globalcors:
+#        cors-configurations:
+#          '[/**]':
+#            allowedOrigins: "http://192.168.3.182:8888"
+#            allowedMethods:
+#              - GET
+#              - POST
 #          filters:
 #            - StripPrefix=1
+
 # rate limiter configuration
 
 rate-limit:
@@ -65,7 +56,7 @@ rate-limit:
     capacity: 30
     refillTokens: 2
     refillDuration: 1
-
+##不需要进过验证过滤器验证的路径或者是资源 忽略条件：url 排除?号之后的字符串后 任意匹配如下配置的字符串
 filter:
   gateway:
     authorize:
