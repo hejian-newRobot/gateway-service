@@ -1,102 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.6.RELEASE</version>
-        <relativePath /> <!-- lookup parent from repository -->
-    </parent>
-    <groupId>com.learn</groupId>
     <artifactId>gateway-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>gateway-service</name>
-    <description>SimpleGateway Demo project by Spring Cloud Gateway from Spring Boot</description>
-    <packaging>jar</packaging>
-
-    <properties>
-        <java.version>1.8</java.version>
-        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
-        <bucket4j.version>4.4.1</bucket4j.version>
-        <swagger.version>2.9.2</swagger.version>
-        <jjwt.version>0.9.0</jjwt.version>
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>${jjwt.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.github.vladimir-bukhtoyarov/bucket4j-core -->
-        <dependency>
-            <groupId>com.github.vladimir-bukhtoyarov</groupId>
-            <artifactId>bucket4j-core</artifactId>
-            <version>${bucket4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-bean-validators</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-    </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.springframework.boot</groupId>
             </plugin>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
@@ -104,5 +15,101 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <dependency>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
+        <dependency>
+            <artifactId>jjwt</artifactId>
+            <groupId>io.jsonwebtoken</groupId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.vladimir-bukhtoyarov/bucket4j-core -->
+        <dependency>
+            <artifactId>bucket4j-core</artifactId>
+            <groupId>com.github.vladimir-bukhtoyarov</groupId>
+            <version>${bucket4j.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+            <groupId>org.springframework.boot</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <groupId>org.springframework.boot</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <artifactId>quartz</artifactId>
+            <groupId>org.quartz-scheduler</groupId>
+            <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <groupId>io.springfox</groupId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>springfox-swagger2</artifactId>
+            <groupId>io.springfox</groupId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>springfox-bean-validators</artifactId>
+            <groupId>io.springfox</groupId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <!--避免使用java8以上版本的jdk出现找不到jax context的问题，因为这东西将会被弃用-->
+        <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+        <dependency>
+            <artifactId>jaxb-api</artifactId>
+            <groupId>javax.xml.bind</groupId>
+            <version>2.3.0</version>
+        </dependency>
+    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <groupId>org.springframework.cloud</groupId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${spring-cloud.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <description>SimpleGateway Demo project by Spring Cloud Gateway from Spring Boot</description>
+    <groupId>com.learn</groupId>
+    <modelVersion>4.0.0</modelVersion>
+    <name>gateway-service</name>
+
+    <packaging>jar</packaging>
+
+    <parent>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <relativePath />
+        <version>2.1.6.RELEASE</version> <!-- lookup parent from repository -->
+    </parent>
+
+    <properties>
+        <bucket4j.version>4.4.1</bucket4j.version>
+        <java.version>1.8</java.version>
+        <jjwt.version>0.9.0</jjwt.version>
+        <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+        <swagger.version>2.9.2</swagger.version>
+    </properties>
+
+    <version>0.0.1-SNAPSHOT</version>
 
 </project>
