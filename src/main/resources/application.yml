@@ -39,6 +39,28 @@ spring:
           filters:
             - SwaggerHeaderFilter
             - StripPrefix=1
+#        - id: carrierService
+#            uri: http://courierapi-test.hxfsjt.com
+#            predicates:
+#              - path: /carrier/**
+#            filters:
+#              - ExistedServiceAuthorizationFilter
+#              - StripPrefix=1
+#        - id: takeoutService
+#            uri: http://fswmapi-test.hxfsjt.com
+#            predicates:
+#              - path: /takeout/**
+#            filters:
+#              - ExistedServiceAuthorizationFilter
+#              - StripPrefix=1
+#        - id: storeService
+#            uri: http://fsmsapi-test.hxfsjt.com
+#            predicates:
+#              - path: /store/**
+#            filters:
+#              - ExistedServiceAuthorizationFilter
+#              - StripPrefix=1
+
 #      globalcors:
 #        cors-configurations:
 #          '[/**]':

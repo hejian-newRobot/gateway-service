@@ -1,0 +1,12 @@
+## discovery server 端口
+server:
+  discovery:
+    port1: 8761
+##
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone:
+        http://${eureka.instance.hostname}:${server.discovery.port1}/eureka/

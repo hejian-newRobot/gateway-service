@@ -10,18 +10,15 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import utils.HttpResponseUtils;
 
 /**
  * 项目名称：SimpleSpringCloudGateway
@@ -41,22 +38,35 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
 
-    private static Logger logger = LoggerFactory.getLogger(AuthorizeGatewayFilter.class);
-
     /**
      * token Key
      */
     private static final String AUTHORIZATION = "Authorization";
-
     /**
      * access_token key
      */
     private static final String ACCESS_TOKEN = "access_token";
-
+    private static Logger logger = LoggerFactory.getLogger(AuthorizeGatewayFilter.class);
     /**
      * a string list that need to skip currently filter
      */
     private String[] ignoredSubSequenceOfUrl;
+
+    public static String getAccessToken(ServerHttpRequest request) {
+        HttpHeaders headers = request.getHeaders();
+        String token = headers.getFirst(AUTHORIZATION);
+        //从header中取token为null
+        if (token == null) {
+            logger.warn("Authorization token from header is empty");
+            token = request.getQueryParams().getFirst(ACCESS_TOKEN);
+        }
+        return token;
+    }
+
+    private boolean isExistAccessToken(ServerHttpRequest request) {
+        String token = getAccessToken(request);
+        return !StringUtils.isEmpty(token);
+    }
 
     @Override
     public int getOrder() {
@@ -76,26 +86,12 @@ public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
                         : StringUtils.EMPTY)) {
             return chain.filter(exchange);
         }
-        HttpHeaders headers = request.getHeaders();
-        String token = headers.getFirst(AUTHORIZATION);
-        //从header中取token为null
-        if (token == null) {
-            logger.warn("Authorization token from header is empty");
-            token = request.getQueryParams().getFirst(ACCESS_TOKEN);
+        if (isExistAccessToken(request)) {
+            logger.info("Authorization token is not empty");
+            logger.info("Authorization token is ok");
+            return chain.filter(exchange);
         }
-        ServerHttpResponse response = exchange.getResponse();
-        if (StringUtils.isEmpty(token)) {
-            String msg = "token is empty ,please check request header";
-            logger.warn(msg);
-            response.setStatusCode(HttpStatus.UNAUTHORIZED);
-            byte[] value = msg.getBytes();
-            DataBuffer dataBuffer = response.bufferFactory().wrap(value);
-            return response.writeWith(Flux.just(dataBuffer));
-        }
-        logger.info("Authorization token is not empty");
-
-        logger.info("Authorization token is ok");
-        return chain.filter(exchange);
+        return HttpResponseUtils.getMonoWithUnauthorized(exchange);
     }
 
     private boolean checkIgnoredSequences(String[] ignoredSequences, String url) {

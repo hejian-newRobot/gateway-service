@@ -2,18 +2,15 @@ package com.learn.simplegateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-
-import authentication.filter.RateLimitByIpGatewayFilter;
 
 /**
  * API网关服务
  *
- * @ EnableOAuth2Sso 启用OAuth2单点登录
  * @author Administrator
+ * @ EnableOAuth2Sso 启用OAuth2单点登录
  */
-@SpringBootApplication(scanBasePackages = {"conf", "authentication.*"})
+@SpringBootApplication(scanBasePackages = {"conf", "authentication.*", "utils"})
 @EnableEurekaClient
 public class SimpleGatewayApplication {
 
