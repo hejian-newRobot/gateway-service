@@ -13,7 +13,7 @@ spring:
   jmx:
     default-domain: spring-cloud-gateway
   profiles:
-    active: dev
+    active: hejian
   cloud:
     gateway:
       discovery:
@@ -26,40 +26,21 @@ spring:
           predicates:
             - Path=/demo/**
           filters:
-            - SwaggerHeaderFilter
+            - SwaggerRequestFilter
             - StripPrefix=1
         - id: authservice
           uri: lb://service-auth/${path.oauth.prefix}/
           predicates:
             - Path=/${path.oauth.prefix}/**
+          filters:
+            - SwaggerRequestFilter
         - id: staffservice
           uri: lb://service-staff/
           predicates:
             - Path=/staff/**
           filters:
-            - SwaggerHeaderFilter
+            - SwaggerRequestFilter
             - StripPrefix=1
-#        - id: carrierService
-#            uri: http://courierapi-test.hxfsjt.com
-#            predicates:
-#              - path: /carrier/**
-#            filters:
-#              - ExistedServiceAuthorizationFilter
-#              - StripPrefix=1
-#        - id: takeoutService
-#            uri: http://fswmapi-test.hxfsjt.com
-#            predicates:
-#              - path: /takeout/**
-#            filters:
-#              - ExistedServiceAuthorizationFilter
-#              - StripPrefix=1
-#        - id: storeService
-#            uri: http://fsmsapi-test.hxfsjt.com
-#            predicates:
-#              - path: /store/**
-#            filters:
-#              - ExistedServiceAuthorizationFilter
-#              - StripPrefix=1
 
 #      globalcors:
 #        cors-configurations:

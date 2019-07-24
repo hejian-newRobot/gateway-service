@@ -3,8 +3,9 @@ package conf;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import authentication.filter.ExistedServiceAuthorizationFilter;
 import authentication.filter.RateLimitByIpGatewayFilter;
-import authentication.filter.SwaggerHeaderFilter;
+import authentication.filter.SwaggerRequestFilter;
 
 /**
  * 项目名称：SimpleSpringCloudGateway
@@ -27,7 +28,12 @@ public class FilterAutoConfiguration {
     }
 
     @Bean
-    public SwaggerHeaderFilter swaggerHeaderFilter() {
-        return new SwaggerHeaderFilter();
+    public SwaggerRequestFilter swaggerHeaderFilter() {
+        return new SwaggerRequestFilter();
+    }
+
+    @Bean
+    public ExistedServiceAuthorizationFilter existedServiceAuthorizationFilter() {
+        return new ExistedServiceAuthorizationFilter();
     }
 }

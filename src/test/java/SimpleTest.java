@@ -6,9 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.io.ByteArrayInputStream;
-import java.security.PublicKey;
-import java.security.cert.CertificateFactory;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -16,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
+import utils.JwtUtils;
 
 /**
  * 项目名称：SimpleSpringCloudGateway
@@ -66,13 +63,15 @@ public class SimpleTest {
 
 //         String header = request.getHeader("Authorization");
 //        String token = StringUtils.substringAfter(header, "bearer ");
-        String token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjM5MDE0NjQsInVzZXJfbmFtZSI6IjE4ODgiLCJhdXRob3JpdGllcyI6WyJST0xFX1dCVVNFUiJdLCJqdGkiOiI5ZGI2MTEwNi05YTViLTRjOTYtOWNhMS0yZGE2ODBhNWEwM2YiLCJjbGllbnRfaWQiOiJhbmRyb2lkIiwic2NvcGUiOlsieHgiXX0.H1jJpGt7EH6apcWF08HoxV0Z7BwLfAy7zNaW-tof5xaq5zqPxVbrq2H4mwcK4g3BpGbEQkgdT384M2z33cFqMsyRAAl7a8HQuuDDCD7RcXprSLPZI3lMA29Gzbj5f73JETWYtvQAkiq8Bx4GKZFRdDB-hHk1imHIry2Sd0qPt11eeY7OQbZrjuqjUVtFozgHUJMUX0nayP_6YAOL6eA1wqJbfkwKP1Cy9YtMjHYbHITpiXv8H1ILGtq5E7u07v5GW7zA8LPlmUOmOr_YTR6emVqD1hbD35oR6xe8hs_FQK856ZqCyQWIeZPc6Lb6_XkIffkj1KH3s1apn8rtl7l9yg";
-        Claims claims;
+        String token = "bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjM5NTU1MTcsInVzZXJfbmFtZSI6IjE5OTk5IiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9XQlVTRVIiXSwianRpIjoiZGVhMjY5MTUtNDI4Mi00ODQzLThiNjAtNzgyMGU2ZGVjMDE3IiwiY2xpZW50X2lkIjoiYW5kcm9pZCIsInNjb3BlIjpbInh4Il19.sOMoEiozeqWk39Fs4jOEPluRc9sjhsSFUZpWJetKir_Gc0v3hylnRJ8VNCXrlA73MYesxaL7kdDddtsXSSLHW7m8OChHvEko0uSpOsjMOIK8vo-WtgaV4AZ7G_yk_6NfvVC6MFNbHdlfirZDlS54AwLPpJnyhKTjR4AWlXgnCBe_cDr8IVgAYO1kmLl5lhQPIHPl3rvQGHt8RcUyfZj-bHl4BukX29CVuRNT6wQslzlBGomC3Uk1hzMi_sZsYODm42GWb5ZxN3qkdqeHELf7VUVF4FitVuvd9GCVxX_DAfYA2PAC_CxPiA9yy0h7WlbFhffHGEJXBm7ngRWR9hf04w";
+        Claims claims = null;
         try {
-            PublicKey publicKey = CertificateFactory.getInstance("X.509")
+            token = token.replaceFirst("bearer ", "");
+            ZonedDateTime expired = JwtUtils.getExpired(token);
+           /* PublicKey publicKey = CertificateFactory.getInstance("X.509")
                     .generateCertificate(new ByteArrayInputStream(this.publicKey.getBytes()))
                     .getPublicKey();
-            claims = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token).getBody();
+            claims = Jwts.parser().setSigningKey(publicKey).parseClaimsJws(token).getBody();*/
         } catch (Exception e) {
             String message = e.getMessage();
             message = message == null ? StringUtils.EMPTY : message;
@@ -82,7 +81,7 @@ public class SimpleTest {
             }
             return;
         }
-        assert claims != null;
+        assert false;
         Long exp = Long.valueOf(claims.get("exp").toString());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String datetime = formatter.format(ZonedDateTime.ofInstant(Instant.ofEpochSecond(exp), ZoneOffset.UTC));

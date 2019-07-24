@@ -31,7 +31,7 @@ public class HttpResponseUtils {
 
     public static Mono<Void> getMonoWithUnauthorized(ServerWebExchange exchange) {
         ServerHttpResponse response = exchange.getResponse();
-        String msg = "token is empty ,please check request header";
+        String msg = "token is empty or unauthorized,please check request header or access_token arg";
         logger.warn(msg);
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
         byte[] value = msg.getBytes();

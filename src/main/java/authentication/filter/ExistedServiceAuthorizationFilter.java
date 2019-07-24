@@ -5,13 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
 import java.security.cert.CertificateException;
 import java.time.ZonedDateTime;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import utils.HttpResponseUtils;
 import utils.JwtUtils;
 
@@ -27,7 +27,6 @@ import utils.JwtUtils;
  *
  * @author hejian
  */
-@Configuration
 public class ExistedServiceAuthorizationFilter extends AbstractGatewayFilterFactory {
 
     /**
@@ -53,6 +52,9 @@ public class ExistedServiceAuthorizationFilter extends AbstractGatewayFilterFact
                 }
                 if (e instanceof CertificateException) {
                     logger.error("证书解析异常！！严重问题");
+                }
+                if (e instanceof MalformedJwtException) {
+                    logger.error("access_token 格式错误！！");
                 }
                 return HttpResponseUtils.getMonoWithUnauthorized(exchange);
             }

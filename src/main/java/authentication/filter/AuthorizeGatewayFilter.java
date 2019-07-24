@@ -59,6 +59,9 @@ public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
         if (token == null) {
             logger.warn("Authorization token from header is empty");
             token = request.getQueryParams().getFirst(ACCESS_TOKEN);
+        } else {
+            int beginIndex = token.indexOf(" ");
+            token = token.substring(beginIndex != -1 ? beginIndex : 0);
         }
         return token;
     }
