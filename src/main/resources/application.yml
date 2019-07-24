@@ -13,7 +13,7 @@ spring:
   jmx:
     default-domain: spring-cloud-gateway
   profiles:
-    active: hejian
+    active: dev
   cloud:
     gateway:
       discovery:
