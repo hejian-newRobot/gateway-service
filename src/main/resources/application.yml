@@ -26,7 +26,6 @@ spring:
           predicates:
             - Path=/demo/**
           filters:
-            - SwaggerRequestFilter
             - StripPrefix=1
         - id: authservice
           uri: lb://service-auth/${path.oauth.prefix}/
@@ -39,7 +38,6 @@ spring:
           predicates:
             - Path=/staff/**
           filters:
-            - SwaggerRequestFilter
             - StripPrefix=1
 
 #      globalcors:
