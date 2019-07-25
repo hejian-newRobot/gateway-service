@@ -10,3 +10,29 @@ eureka:
     service-url:
       defaultZone:
         http://${eureka.instance.hostname}:${server.discovery.port1}/eureka/
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: firstmicroservice
+          uri: lb://service-demo/
+          predicates:
+            - Path=/demo/**
+          filters:
+            - StripPrefix=1
+        - id: authservice
+          uri: lb://service-auth/${path.oauth.prefix}/
+          predicates:
+            - Path=/${path.oauth.prefix}/**
+          filters:
+            - SwaggerRequestFilter
+        - id: staffservice
+          uri: lb://service-staff/
+          predicates:
+            - Path=/staff/**
+          filters:
+            - StripPrefix=1
