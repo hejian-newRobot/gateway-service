@@ -82,11 +82,13 @@ public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
         logger.info("send method {} request to {}", request.getMethod(), request.getURI().toString());
         //将会跳转到OAuth2认证服务 无需提前验证 是否存在AUTHORIZATION
         //其余所有访问别的服务的请求将需要携带AUTHORIZATION请求头或者是请求参数
+        //NOTE: swagger请求的header携带了Referer 值为 url 所有swagger的请求将会无需携带 token
         Object referer = request.getHeaders().get("Referer");
         if (checkIgnoredSequences(ignoredSubSequenceOfUrl,
                 Optional.ofNullable(referer).isPresent()
                         ? referer.toString()
-                        : StringUtils.EMPTY)) {
+                        : StringUtils.EMPTY)
+                || checkIgnoredSequences(ignoredSubSequenceOfUrl, request.getPath().toString())) {
             return chain.filter(exchange);
         }
         if (isExistAccessToken(request)) {
