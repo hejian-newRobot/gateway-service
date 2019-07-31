@@ -36,3 +36,9 @@ spring:
             - Path=/staff/**
           filters:
             - StripPrefix=1
+        - id: estimateservice
+          uri: lb://service-estimate/
+          predicates:
+            - Path=/estimate/**
+          filters:
+            - StripPrefix=1
