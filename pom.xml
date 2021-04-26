@@ -106,7 +106,7 @@
 
     <properties>
         <bucket4j.version>4.4.1</bucket4j.version>
-        <common.io.version>2.4</common.io.version>
+        <common.io.version>2.7</common.io.version>
         <java.version>1.8</java.version>
         <jjwt.version>0.9.0</jjwt.version>
         <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
